@@ -37,3 +37,4 @@ class LoginView(APIView):
         user = serializer.validated_data["user"]
         refresh = RefreshToken.for_user(user)
         return Response(build_token_payload(refresh), status=status.HTTP_200_OK)
+

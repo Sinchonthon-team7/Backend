@@ -5,8 +5,28 @@ from rest_framework import status, permissions
 from django.shortcuts import get_object_or_404
 from .models import Post, Like, Comment
 from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Count
 
 # Create your views here.
+
+class TrendPostsAPIView(APIView):
+    permission_classes = [permissions.AllowAny]  # 로그인 안 해도 볼 수 있게
+
+    def get(self, request):
+        two_weeks_ago = timezone.now() - timedelta(days=14)
+
+        posts = (
+            Post.objects.filter(created_at__gte=two_weeks_ago)
+            .annotate(likes_count=Count("was_likes"))
+            .order_by("-likes_count", "-created_at")[:3]
+        )
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class PostListCreateAPIView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     #permission_classes = [permissions.AllowAny]
@@ -118,3 +138,4 @@ class CommentUpdateDeleteAPIView(APIView):
         comment = self.get_object(post_id, comment_id, request.user)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

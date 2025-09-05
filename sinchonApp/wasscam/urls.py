@@ -12,4 +12,6 @@ urlpatterns = [
 
     path('posts/<int:post_id>/comments/', CommentListCreateAPIView.as_view(), name='comment-list-create'),
     path('posts/<int:post_id>/comments/<int:comment_id>/', CommentUpdateDeleteAPIView.as_view(), name='comment-detail'),
+    path('posts/trend/', TrendPostsAPIView.as_view(), name='trend-posts'),
+
 ]
