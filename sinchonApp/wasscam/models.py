@@ -20,6 +20,7 @@ class Post(models.Model):
     subcategory = models.CharField(max_length=20)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    thumbnail_url = models.URLField(blank=True, null=True)
 
     def __str__ (self):
         return self.title
