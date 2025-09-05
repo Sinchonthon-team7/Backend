@@ -9,7 +9,7 @@ from similarity.utils.phone import normalize_kr_number
 
 APICK_BASE = os.getenv("APICK_BASE_URL", "https://apick.app")
 APICK_KEY  = os.getenv("APICK_API_KEY", "")
-APICK_TIMEOUT = float(os.getenv("APICK_TIMEOUT"))
+APICK_TIMEOUT = float(os.getenv("APICK_TIMEOUT","10"))
 
 @dataclass
 class PhoneRisk:

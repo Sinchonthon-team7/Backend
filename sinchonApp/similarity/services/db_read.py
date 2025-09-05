@@ -4,7 +4,7 @@ from django.db import connection
 def fetch_cases_by_tag(tag: str):
     sql = """
     SELECT id, category, title, body, created_at
-    FROM post
+    FROM wasscam_post
     WHERE category = %s
     ORDER BY created_at DESC
     LIMIT 200;  -- 더미 적을 땐 넉넉히 불러오기
