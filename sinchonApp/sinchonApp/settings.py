@@ -20,6 +20,23 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+AWS_REGION = os.getenv("AWS_REGION", "ap-northeast-2")
+AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
+AWS_S3_ALLOWED_SCOPES = [s.strip() for s in os.getenv("AWS_S3_ALLOWED_SCOPES", "isscam,scamis").split(",") if s.strip()]
+AWS_S3_ALLOWED_MIME = [s.strip() for s in os.getenv("AWS_S3_ALLOWED_MIME", "image/*").split(",") if s.strip()]
+AWS_S3_PRESIGN_EXPIRES = int(os.getenv("AWS_S3_PRESIGN_EXPIRES", "60"))
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+CDN_BASE_URL = os.getenv("CDN_BASE_URL") or None  # 빈 문자열이면 None 처리
+
+# true/false 문자열을 bool로 변환
+AWS_S3_RETURN_SIGNED_ON_CONFIRM = os.getenv(
+    "AWS_S3_RETURN_SIGNED_ON_CONFIRM", "true"
+).lower() == "true"
+
+# GET presigned URL 만료(초) - CDN 안 쓰고 private 버킷일 때 활용
+AWS_S3_GET_PRESIGN_EXPIRES = int(os.getenv("AWS_S3_GET_PRESIGN_EXPIRES", "300"))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -27,15 +44,21 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = 'django-insecure-(2q7f6r1^!nas6yt3!x&f_=7j5utvkz2ze-a-a&j%s!ds%lk*-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = False
 
 AUTH_USER_MODEL = "user.User"
 
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "13.209.81.150", "ec2-13-209-81-150.ap-northeast-2.compute.amazonaws.com"]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://13.209.81.150",
+    "http://localhost:3000", 
+]
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +70,7 @@ INSTALLED_APPS = [
     'isscam',
     "wasscam",
     'similarity',
+    'storage',
 ]
 
 REST_FRAMEWORK = {
@@ -65,6 +89,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,13 +138,6 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -155,13 +173,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-'''
+
 DATABASES = {
     "default": {
         "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.mysql"),
@@ -173,7 +191,6 @@ DATABASES = {
         "OPTIONS": {"charset": "utf8mb4"},
     }
 }
-'''
 
 pymysql.install_as_MySQLdb()
 
