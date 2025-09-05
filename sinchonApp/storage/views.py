@@ -15,6 +15,7 @@ from rest_framework import status, permissions, parsers
 from rest_framework.renderers import JSONRenderer
 import logging
 from .serializers import *
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 logger = logging.getLogger(__name__)
 

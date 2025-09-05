@@ -46,11 +46,10 @@ SECRET_KEY = 'django-insecure-(2q7f6r1^!nas6yt3!x&f_=7j5utvkz2ze-a-a&j%s!ds%lk*-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-<<<<<<< HEAD
 AUTH_USER_MODEL = "user.User"
-=======
+
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "13.209.81.150", "ec2-13-209-81-150.ap-northeast-2.compute.amazonaws.com"]
->>>>>>> 189a40d (requirements.txt   위치수정)
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://13.209.81.150",
@@ -139,16 +138,6 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-<<<<<<< HEAD
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-=======
->>>>>>> 189a40d (requirements.txt   위치수정)
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -190,7 +179,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-'''
+
 DATABASES = {
     "default": {
         "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.mysql"),
@@ -202,7 +191,6 @@ DATABASES = {
         "OPTIONS": {"charset": "utf8mb4"},
     }
 }
-'''
 
 pymysql.install_as_MySQLdb()
 
