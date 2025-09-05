@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/isscam/', include("isscam.urls")),
     path('api/wasscam/', include("wasscam.urls")),
     path('api/similarity/', include('similarity.urls')),
+    path("api/storage/", include("storage.urls")),
+
 ]
