@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 annotated-types==0.7.0
 anyio==4.10.0
 asgiref==3.9.1
@@ -29,3 +30,27 @@ tqdm==4.67.1
 typing-inspection==0.4.1
 typing_extensions==4.15.0
 urllib3==2.5.0
+=======
+asgiref==3.9.1
+boto3==1.40.24
+botocore==1.40.24
+cffi==1.17.1
+cryptography==45.0.7
+Django==5.2.5
+django-cors-headers==4.7.0
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+gunicorn==23.0.0
+jmespath==1.0.1
+packaging==25.0
+pycparser==2.22
+PyJWT==2.10.1
+PyMySQL==1.1.2
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.1
+s3transfer==0.13.1
+six==1.17.0
+sqlparse==0.5.3
+tzdata==2025.2
+urllib3==2.5.0
+>>>>>>> 189a40d (requirements.txt   위치수정)
