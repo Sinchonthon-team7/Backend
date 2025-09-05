@@ -60,4 +60,6 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError("아이디 또는 비밀번호가 일치하지 않습니다.", code="auth")
         attrs["user"] = user
+
         return attrs
+
