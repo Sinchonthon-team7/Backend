@@ -102,8 +102,11 @@ class AssessView(APIView):
         contact_freq = calc_contact_score()
 
         # 5) 합성 점수/라벨
-        risk_score = 0.6 * sim_top + 0.4 * contact_freq
+        risk_score = 0.55 * sim_top + 0.45 * contact_freq
         label = "high" if risk_score >= 0.75 else ("mid" if risk_score >= 0.45 else "low")
+        # 전화번호 조회 결과 후 스팸이면 위험도 high로 격상
+        if phone_info and phone_info.get("spam"):
+            label = "high"
 
         return Response({
             "label": label,
