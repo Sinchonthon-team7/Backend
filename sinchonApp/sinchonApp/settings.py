@@ -44,15 +44,22 @@ AWS_S3_GET_PRESIGN_EXPIRES = int(os.getenv("AWS_S3_GET_PRESIGN_EXPIRES", "300"))
 SECRET_KEY = 'django-insecure-(2q7f6r1^!nas6yt3!x&f_=7j5utvkz2ze-a-a&j%s!ds%lk*-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+<<<<<<< HEAD
 AUTH_USER_MODEL = "user.User"
+=======
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "13.209.81.150", "ec2-13-209-81-150.ap-northeast-2.compute.amazonaws.com"]
+>>>>>>> 189a40d (requirements.txt   위치수정)
 
+CORS_ALLOWED_ORIGINS = [
+    "http://13.209.81.150",
+    "http://localhost:3000", 
+]
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,6 +90,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -131,12 +139,15 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+=======
+>>>>>>> 189a40d (requirements.txt   위치수정)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

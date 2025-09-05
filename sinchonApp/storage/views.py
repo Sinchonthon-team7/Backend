@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 
 class PresignView(APIView):
     # 개발 편의: 인증/CSRF/HTML 렌더 비활성
-    permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     renderer_classes = [JSONRenderer]
     parser_classes = [parsers.JSONParser]
 
@@ -111,8 +111,8 @@ class ConfirmView(APIView):
     - (가능하면) S3 HeadObject로 존재/메타 확인
     - 최종 접근 URL(CDN or 서명 URL or 공개 S3 URL) 반환
     """
-    permission_classes = [permissions.AllowAny]   # ✅ 개발용
-    authentication_classes = []                   # 개발 중 인증 생략
+    permission_classes = [permissions.IsAuthenticated]   # ✅ 개발용
+    authentication_classes = [JWTAuthentication]                   # 개발 중 인증 생략
     renderer_classes = [JSONRenderer]
     parser_classes = [parsers.JSONParser]
 
