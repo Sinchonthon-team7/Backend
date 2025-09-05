@@ -11,7 +11,7 @@ def fetch_candidates_mysql(category: str, query_text: str, limit: int = 20):
         # FULLTEXT 시도
         sql = """
         SELECT id, category, title, body, created_at
-        FROM cases
+        FROM post
         WHERE category = %s
         ORDER BY MATCH(title, body) AGAINST (%s IN NATURAL LANGUAGE MODE) DESC, created_at DESC
         LIMIT %s;
@@ -28,7 +28,7 @@ def fetch_candidates_mysql(category: str, query_text: str, limit: int = 20):
         # 폴백: 최신순
         sql = """
         SELECT id, category, title, body, created_at
-        FROM cases
+        FROM post
         WHERE category = %s
         ORDER BY created_at DESC
         LIMIT %s;
