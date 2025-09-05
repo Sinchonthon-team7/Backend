@@ -10,9 +10,9 @@
 | ------- | ----- | ----- |
 | **Backend** | Django 5 · DRF | API 레이어, Serializer / Permission / Pagination |
 | **Auth** | djangorestframework-simplejwt | 액세스·리프레시 토큰 발급, 만료 시각 ISO8601 표준 |
-| **Storage** | AWS S3 · boto3 | Presigned **PUT** 업로드 & **GET** (프라이빗 시) |
+| **Storage** | AWS S3 · boto3 | Presigned **PUT** 업로드 & **GET** |
 | **Infra** | Nginx · Docker / docker-compose | 로컬 & 배포 환경 일관성 |
-| **DB** | MySQL | 커스텀 User 모델(`user.User`) |
+| **DB** | MySQL |  |
 | **Web** | django-cors-headers | 프론트엔드 오리진 화이트리스트 관리 |
 
 ---
