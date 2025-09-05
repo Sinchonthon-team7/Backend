@@ -1,4 +1,3 @@
-# similarity/views.py
 import json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -73,7 +72,12 @@ class AssessView(APIView):
         # 0) body에서 전화번호 자동 추출
         contact_num = None
         if isinstance(contacts, list) and contacts:
-            contact_num = normalize_kr_number(str(contacts[0]))
+            first = contacts[0]
+            if isinstance(first, dict):
+                raw = first.get("value") or first.get("number") or ""
+            else:
+                raw = str(first)
+            contact_num = normalize_kr_number(raw)
 
         # body에서 추출 (contacts가 없을 때만)
         if not contact_num:
@@ -81,25 +85,36 @@ class AssessView(APIView):
             if body_phone:
                 contact_num = normalize_kr_number(body_phone)
 
-        # 전화번호 위험 스코어 계산
+        # 전화번호 위험 스코어 계산 + phone_info 구성
         phone_info = None
-        def calc_contact_score():
-            if not contact_num:
-                return 0.0
-            r = check_spam_number(contact_num, use_cache=True)
-            if not r.ok:
-                return 0.0
-            base = min(1.0, r.spam_count / 1000.0)  # 신고 1000건 이상이면 1로 캡
-            bonus = 0.0
-            if (r.spam or "").strip():
-                s = r.spam
-                if "보이스피싱" in s: bonus = 0.3
-                elif "사기" in s:     bonus = 0.2
-                elif "광고" in s:     bonus = 0.05
-            score = min(1.0, base + bonus)
-            return score
-
-        contact_freq = calc_contact_score()
+        contact_freq = 0.0
+        try:
+            if contact_num:
+                r = check_spam_number(contact_num, use_cache=True)
+                phone_info = {
+                    "number": r.number,
+                    "spam": r.spam,
+                    "spam_count": r.spam_count,
+                    "registed_date": r.registed_date,
+                    "cyber_crime": r.cyber_crime,
+                    "success": r.success_code,
+                    "source": r.source,
+                }
+                if r.ok:
+                    base = min(1.0, (r.spam_count or 0) / 1000.0)
+                    bonus = 0.0
+                    s = (r.spam or "").strip()
+                    if "보이스피싱" in s:
+                        bonus = 0.3
+                    elif "사기" in s:
+                        bonus = 0.2
+                    elif "광고" in s:
+                        bonus = 0.05
+                    contact_freq = min(1.0, base + bonus)
+        except Exception as e:
+            # 외부 API/파싱 예외로 500 뜨지 않게
+            phone_info = {"error": str(e)}
+            contact_freq = 0.0
 
         # 5) 합성 점수/라벨
         risk_score = 0.55 * sim_top + 0.45 * contact_freq

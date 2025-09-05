@@ -10,7 +10,7 @@ def fetch_candidates_mysql(category: str, query_text: str, limit: int = 20):
     try:
         # FULLTEXT 시도
         sql = """
-        SELECT id, category, title, body, created_at
+        SELECT id, category, title, content, created_at
         FROM wasscam_post
         WHERE category = %s
         ORDER BY MATCH(title, body) AGAINST (%s IN NATURAL LANGUAGE MODE) DESC, created_at DESC
@@ -27,7 +27,7 @@ def fetch_candidates_mysql(category: str, query_text: str, limit: int = 20):
     except Exception:
         # 폴백: 최신순
         sql = """
-        SELECT id, category, title, body, created_at
+        SELECT id, category, title, content, created_at
         FROM wasscam_post
         WHERE category = %s
         ORDER BY created_at DESC

@@ -3,7 +3,7 @@ from django.db import connection
 
 def fetch_cases_by_tag(tag: str):
     sql = """
-    SELECT id, category, title, body, created_at
+    SELECT id, category, title, content, created_at
     FROM wasscam_post
     WHERE category = %s
     ORDER BY created_at DESC

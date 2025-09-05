@@ -50,6 +50,8 @@ AUTH_USER_MODEL = "user.User"
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "13.209.81.150", "ec2-13-209-81-150.ap-northeast-2.compute.amazonaws.com"]
 
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://13.209.81.150",
