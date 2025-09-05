@@ -15,7 +15,7 @@ class Post(models.Model):
     CATEGORY_CHOICES = [(k, k) for k in CATEGORY_MAP.keys()]
 
     title = models.CharField(max_length=200)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='is_posts')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     subcategory = models.CharField(max_length=20, null=True)
     content = models.TextField()

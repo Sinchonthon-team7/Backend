@@ -15,12 +15,14 @@ class Post(models.Model):
     CATEGORY_CHOICES = [(k, k) for k in CATEGORY_MAP.keys()]
 
     title = models.CharField(max_length=200)
-    #author = models.ForeignKey() 유저모델 만들면 추가
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='was_posts')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    subcategory = models.CharField(max_length=20)
+    subcategory = models.CharField(max_length=20, null=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     thumbnail_url = models.URLField(blank=True, null=True)
+
+    views = models.PositiveIntegerField(default=0)
 
     def __str__ (self):
         return self.title
