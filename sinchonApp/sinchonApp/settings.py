@@ -20,6 +20,23 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+AWS_REGION = os.getenv("AWS_REGION", "ap-northeast-2")
+AWS_S3_BUCKET = os.getenv("AWS_S3_BUCKET")
+AWS_S3_ALLOWED_SCOPES = [s.strip() for s in os.getenv("AWS_S3_ALLOWED_SCOPES", "isscam,scamis").split(",") if s.strip()]
+AWS_S3_ALLOWED_MIME = [s.strip() for s in os.getenv("AWS_S3_ALLOWED_MIME", "image/*").split(",") if s.strip()]
+AWS_S3_PRESIGN_EXPIRES = int(os.getenv("AWS_S3_PRESIGN_EXPIRES", "60"))
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+CDN_BASE_URL = os.getenv("CDN_BASE_URL") or None  # 빈 문자열이면 None 처리
+
+# true/false 문자열을 bool로 변환
+AWS_S3_RETURN_SIGNED_ON_CONFIRM = os.getenv(
+    "AWS_S3_RETURN_SIGNED_ON_CONFIRM", "true"
+).lower() == "true"
+
+# GET presigned URL 만료(초) - CDN 안 쓰고 private 버킷일 때 활용
+AWS_S3_GET_PRESIGN_EXPIRES = int(os.getenv("AWS_S3_GET_PRESIGN_EXPIRES", "300"))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -47,6 +64,7 @@ INSTALLED_APPS = [
     'isscam',
     "wasscam",
     'similarity',
+    'storage',
 ]
 
 REST_FRAMEWORK = {
